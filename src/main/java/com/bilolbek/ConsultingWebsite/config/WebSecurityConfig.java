@@ -70,7 +70,7 @@ public class WebSecurityConfig {
             @Override
             public void addCorsMappings(CorsRegistry corsRegistry){
                 corsRegistry.addMapping("/api/v1/**")
-                .allowedOrigins("http://localhost:5173")
+                .allowedOrigins("http://localhost:5173", "https://consultingozoda.netlify.app")
                 .allowedMethods("GET", "POST", "PUT", "DELETE");
             }
         };
