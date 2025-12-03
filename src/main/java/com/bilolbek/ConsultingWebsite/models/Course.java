@@ -27,18 +27,24 @@ public class Course {
 
     private String about;
 
+    private String language;
+
+    private int price;
+
     private int lengthInWeek;
 
     public Course(){
 
     }
 
-    public Course(String title, Date startDate, Date endDate, String description, String about){
+    public Course(String title, Date startDate, Date endDate, String description, String about, String language, int price){
         this.title = title;
         this.startDate = startDate;
         this.endDate = endDate;
         this.description = description;
         this.about = about;
+        this.language = language;
+        this.price = price;
 
         long diffMillis = endDate.getTime() - startDate.getTime();
         long diffDays = diffMillis/(1000 * 60 * 60 * 24);
@@ -103,6 +109,24 @@ public class Course {
         this.lengthInWeek = lengthInWeek;
     }
 
+
+    public String getLanguage() {
+        return this.language;
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
+    }
+
+    public int getPrice() {
+        return this.price;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
+    }
+
+
     @Transient
     public int getCurrentProgress() {
         
@@ -131,6 +155,7 @@ public class Course {
     }
 
 
+
     @Override
     public String toString() {
         return "{" +
@@ -140,9 +165,12 @@ public class Course {
             ", endDate='" + getEndDate() + "'" +
             ", description='" + getDescription() + "'" +
             ", about='" + getAbout() + "'" +
+            ", language='" + getLanguage() + "'" +
+            ", price='" + getPrice() + "'" +
             ", lengthInWeek='" + getLengthInWeek() + "'" +
             ", currentProgress='" + getCurrentProgress() + "'" +
             "}";
     }
+    
 
 }

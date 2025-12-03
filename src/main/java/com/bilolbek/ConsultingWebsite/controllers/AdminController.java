@@ -82,12 +82,19 @@ public class AdminController {
             "startDate" : "date",
             "endDate" : "date",
             "description" : "string",
-            "about" : "string"
+            "about" : "string",
+            "language" : "string",
+            "price" : "int"
         } 
      */
     @PostMapping("saveCourse")
     public ResponseEntity<Map<String, String>> saveCourse(@RequestBody Course course){
         return saveDataService.saveCourse(course);
+    }
+
+    @DeleteMapping("deleteCourse/{courseId}")
+    public ResponseEntity<Map<String, String>> deleteCourse(@PathVariable long courseId){
+        return deleteDataService.deleteCourse(courseId);
     }
 
     /*

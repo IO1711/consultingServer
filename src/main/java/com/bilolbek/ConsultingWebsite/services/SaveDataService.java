@@ -95,7 +95,7 @@ public class SaveDataService {
     @Transactional
     public ResponseEntity<Map<String, String>> saveCourse(Course course){
         try {
-            Course newCourse = new Course(course.getTitle(), course.getStartDate(), course.getEndDate(), course.getDescription(), course.getAbout());
+            Course newCourse = new Course(course.getTitle(), course.getStartDate(), course.getEndDate(), course.getDescription(), course.getAbout(), course.getLanguage(), course.getPrice());
             courseRepository.save(newCourse);
             return ResponseEntity.ok(Map.of("message", "Course saved successfully"));
         } catch (DataAccessException e) {
