@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.bilolbek.ConsultingWebsite.DTO.DocCheckDTO;
 import com.bilolbek.ConsultingWebsite.DTO.LearnerDTO;
 import com.bilolbek.ConsultingWebsite.DTO.UserDetailsDTO;
 import com.bilolbek.ConsultingWebsite.models.Course;
@@ -79,7 +80,12 @@ public class GetProtectedController {
         return getDataService.getLearners(courseId);
     }
 
-    @GetMapping("getDocCheckNotes/{reuqestId}")
+    @GetMapping("getDocRequest/{requestId}")
+    public DocCheckDTO getDocRequest(@PathVariable long requestId){
+        return getDataService.getDocRequest(requestId);
+    }
+
+    @GetMapping("getDocCheckNotes/{requestId}")
     public List<DocCheckNotes> getDocCheckNotes(@PathVariable("requestId") long requestId){
         return getDataService.getDocCheckNotes(requestId);
     }
