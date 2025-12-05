@@ -22,6 +22,7 @@ import com.bilolbek.ConsultingWebsite.DTO.DocCheckNotesDTO;
 import com.bilolbek.ConsultingWebsite.DTO.DocCheckStatusDTO;
 import com.bilolbek.ConsultingWebsite.DTO.LearnerDTO;
 import com.bilolbek.ConsultingWebsite.DTO.RecordingsDTO;
+import com.bilolbek.ConsultingWebsite.DTO.UserDetailsDTO;
 import com.bilolbek.ConsultingWebsite.models.Course;
 import com.bilolbek.ConsultingWebsite.models.DocCheckFiles;
 import com.bilolbek.ConsultingWebsite.models.Opportunity;
@@ -30,6 +31,7 @@ import com.bilolbek.ConsultingWebsite.services.EditDataService;
 import com.bilolbek.ConsultingWebsite.services.FileService;
 import com.bilolbek.ConsultingWebsite.services.GetDataService;
 import com.bilolbek.ConsultingWebsite.services.SaveDataService;
+import com.bilolbek.ConsultingWebsite.services.UserService;
 
 @RestController
 @RequestMapping("/api/v1/admin/")
@@ -49,6 +51,9 @@ public class AdminController {
 
     @Autowired
     private EditDataService editDataService;
+
+    @Autowired
+    private UserService userService;
     
     @GetMapping("testAdmin")
     public ResponseEntity<Map<String, String>> testAdmin(){
@@ -218,5 +223,10 @@ public class AdminController {
    @PutMapping("editDocCheckStatus")
    public ResponseEntity<Map<String, String>> editDocCheckStatus(@RequestBody DocCheckStatusDTO statusDTO){
     return editDataService.editDocRequestStatus(statusDTO);
+   }
+
+   @GetMapping("getAllUsers")
+   public List<UserDetailsDTO> getAllUsers(){
+    return userService.getAllUsers();
    }
 }

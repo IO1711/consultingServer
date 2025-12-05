@@ -1,5 +1,7 @@
 package com.bilolbek.ConsultingWebsite.services;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,9 +69,22 @@ public class UserService {
 
         AppUser user = appUserRepository.findByEmail(email);
 
-        UserDetailsDTO currentUser = new UserDetailsDTO(user.getFirstname(), user.getLastname(), user.getEmail(), user.getAvatar(), user.getRole());
+        UserDetailsDTO currentUser = new UserDetailsDTO(user.getId(), user.getFirstname(), user.getLastname(), user.getEmail(), user.getAvatar(), user.getRole());
 
         return currentUser;
+    }
+
+    public List<UserDetailsDTO> getAllUsers(){
+        List<AppUser> allUsers = appUserRepository.findAll();
+        
+        List<UserDetailsDTO> allUserDetails = new ArrayList<>();
+
+        for(AppUser user : allUsers){
+            UserDetailsDTO userDTO = new UserDetailsDTO(user.getId(), user.getFirstname(), user.getLastname(), user.getEmail(), user.getAvatar(), user.getRole());
+            allUserDetails.add(userDTO);
+        }
+
+        return allUserDetails;
     }
 
     public ResponseEntity<Map<String, String>> registerAdmin(RegisterDTO registerDTO){

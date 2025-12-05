@@ -4,19 +4,31 @@ import com.bilolbek.ConsultingWebsite.enums.Role;
 
 public class UserDetailsDTO {
 
+    private long id;
     private String firstname;
     private String lastname;
     private String email;
     private String avatar;
     private Role role;
 
-    public UserDetailsDTO(String fname, String lname, String email, String avatar, Role role){
+    public UserDetailsDTO(long id, String fname, String lname, String email, String avatar, Role role){
+        this.id = id;
         this.firstname = fname;
         this.lastname = lname;
         this.email = email;
         this.avatar = avatar;
         this.role = role;
     }
+
+
+    public long getId() {
+        return this.id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
 
     public String getFirstname() {
         return this.firstname;
