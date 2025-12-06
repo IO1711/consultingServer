@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.bilolbek.ConsultingWebsite.DTO.JoinCourseDTO;
 import com.bilolbek.ConsultingWebsite.DTO.VisaRequestDTO;
 import com.bilolbek.ConsultingWebsite.services.SaveDataService;
 
@@ -53,5 +54,19 @@ public class RequestController {
     @PostMapping("visaRequest")
     public ResponseEntity<Map<String, String>> visaRequest(@RequestBody VisaRequestDTO visaRequestDTO){
         return saveDataService.saveVisaRequest(visaRequestDTO);
+    }
+
+    /*
+        {
+            "courseId" : "long",
+            "school" : "string",
+            "degree" : "string",
+            "major" : "string",
+            "year" : "int"
+        }
+    */
+    @PostMapping("joinCourse")
+    public ResponseEntity<Map<String, String>> saveJoinCourse(@RequestBody JoinCourseDTO requestDTO){
+        return saveDataService.saveJoinCourseRequest(requestDTO);
     }
 }

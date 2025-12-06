@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.bilolbek.ConsultingWebsite.DTO.DocCheckNotesDTO;
+import com.bilolbek.ConsultingWebsite.DTO.JoinCourseDTO;
 import com.bilolbek.ConsultingWebsite.DTO.LearnerDTO;
 import com.bilolbek.ConsultingWebsite.DTO.RecordingsDTO;
 import com.bilolbek.ConsultingWebsite.DTO.UserDetailsDTO;
@@ -21,6 +22,7 @@ import com.bilolbek.ConsultingWebsite.models.Course;
 import com.bilolbek.ConsultingWebsite.models.DocCheck;
 import com.bilolbek.ConsultingWebsite.models.DocCheckFiles;
 import com.bilolbek.ConsultingWebsite.models.DocCheckNotes;
+import com.bilolbek.ConsultingWebsite.models.JoinCourseRequest;
 import com.bilolbek.ConsultingWebsite.models.Learners;
 import com.bilolbek.ConsultingWebsite.models.Opportunity;
 import com.bilolbek.ConsultingWebsite.models.Recordings;
@@ -30,6 +32,7 @@ import com.bilolbek.ConsultingWebsite.repositories.CourseRepository;
 import com.bilolbek.ConsultingWebsite.repositories.DocCheckFilesRepo;
 import com.bilolbek.ConsultingWebsite.repositories.DocCheckNotesRepo;
 import com.bilolbek.ConsultingWebsite.repositories.DocCheckRepo;
+import com.bilolbek.ConsultingWebsite.repositories.JoinCourseRequestRepo;
 import com.bilolbek.ConsultingWebsite.repositories.LearnersRepository;
 import com.bilolbek.ConsultingWebsite.repositories.OpportunityRepo;
 import com.bilolbek.ConsultingWebsite.repositories.RecordingsRepo;
@@ -67,6 +70,9 @@ public class SaveDataService {
 
     @Autowired
     private VisaRequestRepo visaRequestRepo;
+
+    @Autowired
+    private JoinCourseRequestRepo joinCourseRequestRepo;
 
     @Autowired
     private UserService userService;
@@ -192,5 +198,21 @@ public class SaveDataService {
         visaRequestRepo.save(request);
 
         return ResponseEntity.ok(Map.of("message", "Visa request saved successfully"));
+    }
+
+    @Transactional
+    public ResponseEntity<Map<String, String>> saveJoinCourseRequest(JoinCourseDTO requestDTO){
+        UserDetailsDTO userDTO = userService.getUserDetails();
+
+        AppUser user = appUserRepository.findByEmail(userDTO.getEmail());
+
+        Course course = courseRepository.findById(requestDTO.getCourseId())
+            .orElseThrow(() -> new EntityNotFoundException("Course with id " + requestDTO.getCourseId() + " not found"));
+
+        JoinCourseRequest request = new  JoinCourseRequest(course, user, requestDTO.getSchool(), requestDTO.getDegree(), requestDTO.getMajor(), requestDTO.getYear());
+
+        joinCourseRequestRepo.save(request);
+
+        return ResponseEntity.ok(Map.of("message", "Join request saved"));
     }
 }
