@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.bilolbek.ConsultingWebsite.DTO.CourseDTO;
 import com.bilolbek.ConsultingWebsite.DTO.DocCheckDTO;
+import com.bilolbek.ConsultingWebsite.DTO.JoinCourseRequestDTO;
 import com.bilolbek.ConsultingWebsite.DTO.LearnerDTO;
 import com.bilolbek.ConsultingWebsite.DTO.UserDetailsDTO;
 import com.bilolbek.ConsultingWebsite.models.AppUser;
@@ -19,6 +20,7 @@ import com.bilolbek.ConsultingWebsite.models.Course;
 import com.bilolbek.ConsultingWebsite.models.DocCheck;
 import com.bilolbek.ConsultingWebsite.models.DocCheckFiles;
 import com.bilolbek.ConsultingWebsite.models.DocCheckNotes;
+import com.bilolbek.ConsultingWebsite.models.JoinCourseRequest;
 import com.bilolbek.ConsultingWebsite.models.Learners;
 import com.bilolbek.ConsultingWebsite.models.Opportunity;
 import com.bilolbek.ConsultingWebsite.models.Recordings;
@@ -30,6 +32,7 @@ import com.bilolbek.ConsultingWebsite.repositories.CourseRepository;
 import com.bilolbek.ConsultingWebsite.repositories.DocCheckFilesRepo;
 import com.bilolbek.ConsultingWebsite.repositories.DocCheckNotesRepo;
 import com.bilolbek.ConsultingWebsite.repositories.DocCheckRepo;
+import com.bilolbek.ConsultingWebsite.repositories.JoinCourseRequestRepo;
 import com.bilolbek.ConsultingWebsite.repositories.LearnersRepository;
 import com.bilolbek.ConsultingWebsite.repositories.OpportunityRepo;
 import com.bilolbek.ConsultingWebsite.repositories.RecordingsRepo;
@@ -76,6 +79,9 @@ public class GetDataService {
 
     @Autowired
     private VisaRequestRepo visaRequestRepo;
+
+    @Autowired
+    private JoinCourseRequestRepo joinCourseRequestRepo;
 
 
     @Autowired
@@ -259,6 +265,22 @@ public class GetDataService {
         List<VisaRequest> userRequests = visaRequestRepo.findByUser(user);
 
         return userRequests;
+    }
+
+    public List<JoinCourseRequestDTO> getJoinCourseRequests(long courseId){
+        Course course = courseRepository.findById(courseId)
+            .orElseThrow(() -> new EntityNotFoundException("Course with id " + courseId + " not found"));
+
+        List<JoinCourseRequest> joinRequests = joinCourseRequestRepo.findByCourse(course);
+
+        List<JoinCourseRequestDTO> result = new ArrayList<>();
+
+        for(JoinCourseRequest request : joinRequests){
+            JoinCourseRequestDTO requestDTO = new JoinCourseRequestDTO(request.getId(), request.getUser().getId(), request.getUser().getEmail(), request.getUser().getFirstname(), request.getUser().getLastname(), request.getSchool(), request.getDegree(), request.getMajor(), request.getYear());
+            result.add(requestDTO);
+        }
+
+        return result;
     }
 
     

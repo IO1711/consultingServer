@@ -10,11 +10,13 @@ import org.springframework.stereotype.Service;
 import com.bilolbek.ConsultingWebsite.models.Course;
 import com.bilolbek.ConsultingWebsite.models.DocCheck;
 import com.bilolbek.ConsultingWebsite.models.DocCheckFiles;
+import com.bilolbek.ConsultingWebsite.models.JoinCourseRequest;
 import com.bilolbek.ConsultingWebsite.models.Recordings;
 import com.bilolbek.ConsultingWebsite.models.Resources;
 import com.bilolbek.ConsultingWebsite.repositories.CourseRepository;
 import com.bilolbek.ConsultingWebsite.repositories.DocCheckFilesRepo;
 import com.bilolbek.ConsultingWebsite.repositories.DocCheckRepo;
+import com.bilolbek.ConsultingWebsite.repositories.JoinCourseRequestRepo;
 import com.bilolbek.ConsultingWebsite.repositories.RecordingsRepo;
 import com.bilolbek.ConsultingWebsite.repositories.ResourcesRepo;
 
@@ -33,6 +35,8 @@ public class DeleteDataService {
     private RecordingsRepo recordingsRepo;
     @Autowired
     private ResourcesRepo resourcesRepo;
+    @Autowired
+    private JoinCourseRequestRepo joinCourseRequestRepo;
 
     @Autowired
     private FileService fileService;
@@ -43,9 +47,14 @@ public class DeleteDataService {
 
         List<Recordings> courseRecordings = recordingsRepo.findByCourse(course);
         List<Resources> courseResources = resourcesRepo.findByCourse(course);
+        List<JoinCourseRequest> courseJoinRequests = joinCourseRequestRepo.findByCourse(course);
 
         for(Recordings recording : courseRecordings){
             recordingsRepo.delete(recording);
+        }
+
+        for(JoinCourseRequest request : courseJoinRequests){
+            joinCourseRequestRepo.delete(request);
         }
 
         for(Resources resource : courseResources){
@@ -59,6 +68,15 @@ public class DeleteDataService {
         courseRepository.delete(course);
 
         return ResponseEntity.ok(Map.of("message", "Course with id " + courseId + " has been deleted"));
+    }
+
+    public ResponseEntity<Map<String, String>> deleteJoinCourseRequest(long requestId){
+        JoinCourseRequest request = joinCourseRequestRepo.findById(requestId)
+            .orElseThrow(() -> new EntityNotFoundException("Course join request with id " + requestId + " not found"));
+
+        joinCourseRequestRepo.delete(request);
+
+        return ResponseEntity.ok(Map.of("message", "Request is deleted"));
     }
 
     public ResponseEntity<Map<String, String>> deleteDocRequest(long id){

@@ -3,6 +3,7 @@ package com.bilolbek.ConsultingWebsite.services;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -140,13 +141,24 @@ public class SaveDataService {
             Course course = courseRepository.findById(newLearner.getCourseId())
                 .orElseThrow(() -> new EntityNotFoundException("Course not found with id " + newLearner.getCourseId()));
             
-            Learners learner = new Learners();
+            Optional<Learners> existting = learnersRepository.findByStudentAndCourse(user, course);
 
-            learner.setStudent(user);
-            learner.setCourse(course);
+            if(existting.isEmpty()){
+                Learners learner = new Learners();
+
+                learner.setStudent(user);
+                learner.setCourse(course);
+                learnersRepository.save(learner);
+            }
+
+            JoinCourseRequest request = joinCourseRequestRepo.findByCourseAndUser(course, user);
+
+            if(request != null){
+                joinCourseRequestRepo.delete(request);
+            }
 
 
-            learnersRepository.save(learner);
+            
         }
 
         return ResponseEntity.ok(Map.of("message", "Learners added successfully"));

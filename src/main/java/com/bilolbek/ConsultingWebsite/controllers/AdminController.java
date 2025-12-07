@@ -20,6 +20,7 @@ import com.bilolbek.ConsultingWebsite.DTO.DeleteRequestDTO;
 import com.bilolbek.ConsultingWebsite.DTO.DocCheckDTO;
 import com.bilolbek.ConsultingWebsite.DTO.DocCheckNotesDTO;
 import com.bilolbek.ConsultingWebsite.DTO.DocCheckStatusDTO;
+import com.bilolbek.ConsultingWebsite.DTO.JoinCourseRequestDTO;
 import com.bilolbek.ConsultingWebsite.DTO.LearnerDTO;
 import com.bilolbek.ConsultingWebsite.DTO.RecordingsDTO;
 import com.bilolbek.ConsultingWebsite.DTO.UserDetailsDTO;
@@ -228,5 +229,15 @@ public class AdminController {
    @GetMapping("getAllUsers")
    public List<UserDetailsDTO> getAllUsers(){
     return userService.getAllUsers();
+   }
+
+   @GetMapping("getCourseJoinRequests/{courseId}")
+   public List<JoinCourseRequestDTO> getCourseJoinRequests(@PathVariable long courseId){
+    return getDataService.getJoinCourseRequests(courseId);
+   }
+
+   @DeleteMapping("deleteCourseJoinRequest/{requestId}")
+   public ResponseEntity<Map<String, String>> deleteCourseJoinRequest(@PathVariable long requestId){
+    return deleteDataService.deleteJoinCourseRequest(requestId);
    }
 }
