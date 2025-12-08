@@ -235,7 +235,7 @@ public class SaveDataService {
         joinCourseRequestRepo.save(request);
 
         telegramBot.sendMessage(chatId, user.getFirstname() + " " + user.getLastname() + " requests to join the course " + course.getTitle());
-
+        //test
         return ResponseEntity.ok(Map.of("message", "Join request saved"));
     }
 }
