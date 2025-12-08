@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -45,6 +46,9 @@ import jakarta.transaction.Transactional;
 
 @Service
 public class SaveDataService {
+
+    @Value("${telegramChatId}")
+    private long chatId;
 
     @Autowired
     private OpportunityRepo opportunityRepo;
@@ -219,7 +223,6 @@ public class SaveDataService {
 
     @Transactional
     public ResponseEntity<Map<String, String>> saveJoinCourseRequest(JoinCourseDTO requestDTO){
-        long chatId = 607282754;
         UserDetailsDTO userDTO = userService.getUserDetails();
 
         AppUser user = appUserRepository.findByEmail(userDTO.getEmail());
