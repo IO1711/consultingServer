@@ -18,6 +18,7 @@ import com.bilolbek.ConsultingWebsite.DTO.LearnerDTO;
 import com.bilolbek.ConsultingWebsite.DTO.RecordingsDTO;
 import com.bilolbek.ConsultingWebsite.DTO.UserDetailsDTO;
 import com.bilolbek.ConsultingWebsite.DTO.VisaRequestDTO;
+import com.bilolbek.ConsultingWebsite.components.TelegramBot;
 import com.bilolbek.ConsultingWebsite.models.AppUser;
 import com.bilolbek.ConsultingWebsite.models.Course;
 import com.bilolbek.ConsultingWebsite.models.DocCheck;
@@ -80,6 +81,10 @@ public class SaveDataService {
 
     @Autowired
     private FileService fileService;
+
+
+    @Autowired
+    private TelegramBot telegramBot;
 
     @Transactional
     public ResponseEntity<Map<String, String>> saveOpportunity(Opportunity opportunity) {
@@ -214,6 +219,7 @@ public class SaveDataService {
 
     @Transactional
     public ResponseEntity<Map<String, String>> saveJoinCourseRequest(JoinCourseDTO requestDTO){
+        long chatId = 607282754;
         UserDetailsDTO userDTO = userService.getUserDetails();
 
         AppUser user = appUserRepository.findByEmail(userDTO.getEmail());
@@ -224,6 +230,8 @@ public class SaveDataService {
         JoinCourseRequest request = new  JoinCourseRequest(course, user, requestDTO.getSchool(), requestDTO.getDegree(), requestDTO.getMajor(), requestDTO.getYear());
 
         joinCourseRequestRepo.save(request);
+
+        telegramBot.sendMessage(chatId, user.getFirstname() + " " + user.getLastname() + " requests to join the course " + course.getTitle());
 
         return ResponseEntity.ok(Map.of("message", "Join request saved"));
     }
