@@ -55,11 +55,6 @@ public class GetProtectedController {
         return getDataService.getUserVisaRequests();
     }
 
-    @GetMapping("getCourse/{courseId}")
-    public ResponseEntity<?> getCourse(@PathVariable long courseId){
-        return getDataService.getCourse(courseId);
-    }
-
     @GetMapping("getRecordings/{courseId}")
     public List<Recordings> getRecordings(@PathVariable long courseId){
         return getDataService.getRecordings(courseId);
