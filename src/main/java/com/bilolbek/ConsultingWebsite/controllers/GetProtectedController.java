@@ -1,6 +1,7 @@
 package com.bilolbek.ConsultingWebsite.controllers;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -53,6 +54,11 @@ public class GetProtectedController {
     @GetMapping("getUserVisaRequests")
     public List<VisaRequest> getUserVisaRequests(){
         return getDataService.getUserVisaRequests();
+    }
+
+    @GetMapping("verifyStudent/{courseId}")
+    public ResponseEntity<Map<String, Boolean>> verifyStudent(@PathVariable long courseId){
+        return getDataService.verifyStudent(courseId);
     }
 
     @GetMapping("getRecordings/{courseId}")

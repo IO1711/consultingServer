@@ -3,6 +3,7 @@ package com.bilolbek.ConsultingWebsite.services;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -135,6 +136,23 @@ public class GetDataService {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(Map.of("error", "Unexpected error while fetching courses"));
+        }
+    }
+
+    public ResponseEntity<Map<String, Boolean>> verifyStudent(long courseId){
+        UserDetailsDTO userDTO = userService.getUserDetails();
+
+        AppUser user = appUserRepository.findByEmail(userDTO.getEmail());
+
+        Course course = courseRepository.findById(courseId)
+            .orElseThrow(() -> new EntityNotFoundException("Course with id " + courseId + " not found"));
+
+        Optional<Learners> learner = learnersRepository.findByStudentAndCourse(user, course);
+
+        if(learner.isEmpty()){
+            return ResponseEntity.ok(Map.of("isEnrolled", false));
+        } else {
+            return ResponseEntity.ok(Map.of("isEnrolled", true));
         }
     }
 
